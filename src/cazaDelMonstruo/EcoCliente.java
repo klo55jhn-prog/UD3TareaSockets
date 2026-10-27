@@ -20,7 +20,12 @@ class ClienteTCP {
 			System.exit(-1);
 		}
 	}
-
+	public int recibirNum() {
+		return Integer.parseInt(recibirMsg());
+	}
+	public void enviarNum(int numero) {
+		salida.println(numero);
+	}
 	public void closeClienteTCP() {
 		try {
 			salida.close();
@@ -50,14 +55,28 @@ class ClienteTCP {
 public class EcoCliente {
 	public static void main(String[] args) throws IOException {
 		Scanner sc = new Scanner(System.in);
-		String linea;
+		
 		ClienteTCP canal = new ClienteTCP("localhost", 5555);
-		System.out.println("Comience a escribir ('Adiós') para terminar");
-		do {
-			linea = sc.nextLine();
-			canal.enviarMsg(linea);
-			System.out.println("Servidor: " + canal.recibirMsg());
-		} while (!linea.equals("Adiós"));
+		
+		boolean partida = true;
+		while(partida) {
+			
+			System.out.println("Te toca ahora DIME LA FILA SOLO");
+			int intentoFila = sc.nextInt();
+			canal.enviarNum(intentoFila);
+			System.out.println("Te toca ahora DIME LA COLUMNA SOLO");
+			int intentoColumna = sc.nextInt();
+			canal.enviarNum(intentoColumna);
+		
+			String linea = canal.recibirMsg();
+			System.out.println(linea);
+			if (linea.equals("¡ACIERTO!")) {
+				System.out.println("HAS DERROTADO AL MONSTRUO");
+				partida = false;
+			} else {
+				System.out.println("HAS FALLADO");
+			}
+		}
 		canal.closeClienteTCP();
-	}
+	}		
 }
