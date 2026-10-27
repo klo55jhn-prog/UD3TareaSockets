@@ -1,4 +1,4 @@
-package ejercicios;
+package cazaDelMonstruo;
 
 import java.net.*;
 import java.util.Scanner;
